@@ -5,7 +5,7 @@ import {
     Meta,
     Outlet,
     Scripts,
-    ScrollRestoration,
+    ScrollRestoration, useCatch,
 } from "@remix-run/react";
 import sharedStylesUrl from "~/styles/shared.css";
 
@@ -38,3 +38,23 @@ export default function App() {
 export function links() {
     return [{rel: "stylesheet", href: sharedStylesUrl}];
 }
+
+export function CatchBoundary() {
+    const caught = useCatch();
+    return (
+        <html>
+        <head>
+            <title>Oops!</title>
+            <Meta />
+            <Links />
+        </head>
+        <body>
+        <h1>
+            {caught.status} {caught.statusText}
+        </h1>
+        <Scripts />
+        </body>
+        </html>
+    );
+}
+
