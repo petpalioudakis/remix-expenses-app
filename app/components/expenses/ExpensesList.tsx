@@ -1,10 +1,10 @@
 import ExpenseListItem from './ExpenseListItem';
 
-function ExpensesList({ expenses }) {
+function ExpensesList({ expenses }: any) {
 
   return (
     <ol id="expenses-list">
-      {expenses.map((expense) => (
+      {expenses.map((expense: any) => (
         <li key={expense.id}>
           <ExpenseListItem
             id={expense.id}

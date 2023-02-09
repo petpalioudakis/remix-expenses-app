@@ -1,6 +1,6 @@
 import ChartBar from './ChartBar';
 
-function Chart({ expenses }) {
+function Chart({ expenses }: any) {
   const chartDataPoints = [
     { label: 'Jan', value: 0 },
     { label: 'Feb', value: 0 },
@@ -8,7 +8,7 @@ function Chart({ expenses }) {
     { label: 'Apr', value: 0 },
     { label: 'May', value: 0 },
     { label: 'Jun', value: 0 },
-    { label: 'Jul', value: 0 },
+    { label: 'Jual', value: 0 },
     { label: 'Aug', value: 0 },
     { label: 'Sep', value: 0 },
     { label: 'Oct', value: 0 },

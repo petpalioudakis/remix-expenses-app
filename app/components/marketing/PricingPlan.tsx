@@ -1,4 +1,4 @@
-function PricingPlan({ title, price, perks, icon }) {
+function PricingPlan({ title, price, perks, icon }: any) {
   const Icon = icon;
   return (
     <article>
@@ -11,7 +11,7 @@ function PricingPlan({ title, price, perks, icon }) {
       </header>
       <div className="plan-content">
         <ol>
-          {perks.map((perk) => (
+          {perks.map((perk: string) => (
             <li key={perk}>{perk}</li>
           ))}
         </ol>
