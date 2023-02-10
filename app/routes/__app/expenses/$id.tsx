@@ -28,12 +28,13 @@ export async function action({params, request}: any) {
             if (validateExpenseInput(input)) {
                 await updateExpense(expenseId, input);
             }
+            return redirect('/expenses');
         } catch (error) {
             console.error(error);
             return error;
         }
     }
 
-    return redirect('/expenses');
+
 }
 
