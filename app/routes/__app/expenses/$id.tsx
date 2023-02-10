@@ -2,7 +2,7 @@ import Modal from "~/components/util/Modal";
 import ExpenseForm from "~/components/expenses/ExpenseForm";
 import useNavigateBack from "~/hooks/useNavigateBack";
 import {validateExpenseInput} from "~/util/validation.server";
-import {addExpense, updateExpense} from "~/util/expenses.server";
+import {deleteExpense, updateExpense} from "~/util/expenses.server";
 import {redirect} from "@remix-run/node";
 
 export default function ExpenseUpdatePage() {
@@ -14,17 +14,24 @@ export default function ExpenseUpdatePage() {
 }
 
 export async function action({params, request}: any) {
-    const data = await request.formData();
     const expenseId = params.id;
-    const input = Object.fromEntries(data);
-    try {
+    const requestMethod = (request.method as string).toLowerCase();
+    if (requestMethod === 'delete') {
         // @ts-ignore
-        if (validateExpenseInput(input)) {
-            await updateExpense(expenseId, input);
+        await deleteExpense(expenseId);
+    } else if (requestMethod === 'patch') {
+        const data = await request.formData();
+
+        const input = Object.fromEntries(data);
+        try {
+            // @ts-ignore
+            if (validateExpenseInput(input)) {
+                await updateExpense(expenseId, input);
+            }
+        } catch (error) {
+            console.error(error);
+            return error;
         }
-    } catch (error) {
-        console.error(error);
-        return error;
     }
 
     return redirect('/expenses');
