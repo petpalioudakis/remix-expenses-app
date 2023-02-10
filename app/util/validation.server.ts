@@ -11,7 +11,7 @@ function isValidDate(value: string) {
     return value && new Date(value).getTime() < new Date().getTime();
 }
 
-export function validateExpenseInput(input: { title: string, amount: string, date: string }): void {
+export function validateExpenseInput(input: { title: string, amount: string, date: string }): boolean {
     let validationErrors: {title?: string, amount?: string, date?: string} = {};
 
     if (!isValidTitle(input.title)) {
@@ -29,4 +29,6 @@ export function validateExpenseInput(input: { title: string, amount: string, dat
     if (Object.keys(validationErrors).length > 0) {
         throw validationErrors;
     }
+
+    return true;
 }
