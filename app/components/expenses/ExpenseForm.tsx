@@ -8,7 +8,7 @@ function ExpenseForm() {
     <form method="post" className="form" id="expense-form">
       <p>
         <label htmlFor="title">Expense Title</label>
-        <input type="text" id="title" name="title"  maxLength={30} />
+        <input type="text" id="title" name="title" required maxLength={30} />
       </p>
 
       <div className="form-row">
@@ -20,12 +20,12 @@ function ExpenseForm() {
             name="amount"
             min="0"
             step="0.01"
-
+            required
           />
         </p>
         <p>
           <label htmlFor="date">Date</label>
-          <input type="date" id="date" name="date" max={today}  />
+          <input type="date" id="date" name="date" max={today} required />
         </p>
       </div>
         {validationErrors && <ul>
