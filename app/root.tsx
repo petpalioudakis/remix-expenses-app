@@ -1,5 +1,6 @@
 import type {MetaFunction} from "@remix-run/node";
 import {
+    Link,
     Links,
     LiveReload,
     Meta,
@@ -8,6 +9,7 @@ import {
     ScrollRestoration, useCatch,
 } from "@remix-run/react";
 import sharedStylesUrl from "~/styles/shared.css";
+import Error from "~/components/util/Error";
 
 export const meta: MetaFunction = () => ({
     charset: "utf-8",
@@ -15,18 +17,16 @@ export const meta: MetaFunction = () => ({
     viewport: "width=device-width,initial-scale=1",
 });
 
-export default function App() {
+function Document({title, children}: any) {
     return (
         <html lang="en">
         <head>
+            <title>{title}</title>
             <Meta/>
-            <link rel="preconnect" href="https://fonts.googleapis.com"/>
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin=""/>
-            <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet"/>
             <Links/>
         </head>
         <body>
-        <Outlet/>
+        {children}
         <ScrollRestoration/>
         <Scripts/>
         <LiveReload/>
@@ -35,26 +35,51 @@ export default function App() {
     );
 }
 
-export function links() {
-    return [{rel: "stylesheet", href: sharedStylesUrl}];
-}
-
-export function CatchBoundary() {
-    const caught = useCatch();
+export default function App() {
     return (
-        <html>
-        <head>
-            <title>Oops!</title>
-            <Meta />
-            <Links />
-        </head>
-        <body>
-        <h1>
-            {caught.status} {caught.statusText}
-        </h1>
-        <Scripts />
-        </body>
-        </html>
+        <Document>
+            <Outlet/>
+        </Document>
     );
 }
 
+export function CatchBoundary() {
+    const caughtResponse = useCatch();
+
+    return (
+        <Document title={caughtResponse.statusText}>
+            <main>
+                <Error title={caughtResponse.statusText}>
+                    <p>
+                        {caughtResponse.data?.message ||
+                            'Something went wrong. Please try again later.'}
+                    </p>
+                    <p>
+                        Back to <Link to="/">safety</Link>.
+                    </p>
+                </Error>
+            </main>
+        </Document>
+    );
+}
+
+export function ErrorBoundary({error}: any) {
+    return (
+        <Document title="An error occurred">
+            <main>
+                <Error title="An error occurred">
+                    <p>
+                        {error.message || 'Something went wrong. Please try again later.'}
+                    </p>
+                    <p>
+                        Back to <Link to="/">safety</Link>.
+                    </p>
+                </Error>
+            </main>
+        </Document>
+    );
+}
+
+export function links() {
+    return [{rel: 'stylesheet', href: sharedStylesUrl}];
+}
