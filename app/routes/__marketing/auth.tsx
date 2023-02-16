@@ -2,7 +2,7 @@ import React from 'react';
 import AuthForm from "~/components/auth/AuthForm";
 import stylesUrl from "~/styles/auth.css";
 import {validateCredentials} from "~/util/validation.server";
-import {signup} from "~/util/auth.server";
+import {login, signup} from "~/util/auth.server";
 import {redirect} from "@remix-run/node";
 
 export default function AuthPage() {
@@ -30,11 +30,11 @@ export async function action({request}: any) {
     }
     try {
         if (authMode === 'login') {
-            // login logic
+            // @ts-ignore
+            return login(credentials);
         } else {
             // @ts-ignore
-            await signup(credentials);
-            return redirect('/expenses')
+            return  signup(credentials);
         }
     } catch (error) {
         // @ts-ignore
