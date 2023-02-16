@@ -1,6 +1,9 @@
 import React from 'react';
 import AuthForm from "~/components/auth/AuthForm";
 import stylesUrl from "~/styles/auth.css";
+import {validateCredentials} from "~/util/validation.server";
+import {signup} from "~/util/auth.server";
+import {redirect} from "@remix-run/node";
 
 export default function AuthPage() {
     return (
@@ -20,10 +23,25 @@ export async function action({request}: any) {
     const formData = await request.formData();
     const credentials = Object.fromEntries(formData);
     //validate credentials
-    if(authMode === 'login') {
-        // login logic
-    } else {
-        // signup login
+    try {
+        await validateCredentials(credentials);
+    } catch (e) {
+        return e;
+    }
+    try {
+        if (authMode === 'login') {
+            // login logic
+        } else {
+            // @ts-ignore
+            await signup(credentials);
+            return redirect('/expenses')
+        }
+    } catch (error) {
+        // @ts-ignore
+        if(error.status === 422){
+            // @ts-ignore
+           return {credentials: error.message}
+        }
     }
 }
 
