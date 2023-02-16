@@ -17,6 +17,7 @@ const sessionStorage = createCookieSessionStorage({
 /**
  * Create a session for the user
  * @param userId
+ * @param redirectPath
  */
 async function createUserSession(userId: any, redirectPath: string) {
     const session = await sessionStorage.getSession();
@@ -28,6 +29,33 @@ async function createUserSession(userId: any, redirectPath: string) {
     });
 }
 
+export async function destroyUserSession(request:any) {
+    const session = await sessionStorage.getSession(request.headers.get("Cookie"));
+    return redirect("/", {
+        headers: {
+            "Set-Cookie": await sessionStorage.destroySession(session)
+        }
+    });
+}
+
+export async function getUserFromSession(request:any) {
+    const session = await sessionStorage.getSession(request.headers.get("Cookie"));
+    const userId = await session.get("userId");
+
+    if (!userId) {
+        return null;
+    }
+
+    return userId;
+}
+
+export async function requireUserUsession(request:any) {
+    const userId = await getUserFromSession(request);
+
+    if (!userId) {
+        throw redirect("/auth?mode=login");
+    }
+}
 /**
  * Sign up a new user
  * @param email

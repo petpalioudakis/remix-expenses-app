@@ -1,24 +1,30 @@
 import {prisma} from './database.server'
 
-export async function addExpense(expenseData: any) {
+export async function addExpense(expenseData: any, userId: any) {
     try {
-        const expense = await prisma.expense.create({
+         return await prisma.expense.create({
             data: {
                 amount: parseFloat(expenseData.amount),
                 title: expenseData.title,
                 date: new Date(expenseData.date),
+                User: {connect: {id: userId}}
             }
         })
-        return expense;
     } catch (e) {
         console.log(e);
+        throw new Error('Failed to add expense.');
+
     }
 }
 
 
-export async function getExpenses() {
+export async function getExpenses(userId: any) {
+    if(!userId) throw new Error('No user id provided');
     try {
-        const expenses = await prisma.expense.findMany({
+        const expenses = await prisma.expense.findMany( {
+            where: {
+                userId
+            },
             orderBy: {
                 date: 'desc'
             }
