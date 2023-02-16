@@ -50,4 +50,6 @@ export function headers({parentHeaders}: any) {
 }
 
 
+export const handle = { disableJs: true };
+
 
