@@ -39,4 +39,14 @@ export default function PricingPage() {
     );
 }
 
-export function meta() {}
+export function meta() {
+    return {
+        title: 'Expenses App - Pricing Models',
+    }
+}
+
+export function headers() {
+    return {
+        'Cache-Control': 'max-age=3600',
+    }
+}
