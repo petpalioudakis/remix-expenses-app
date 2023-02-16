@@ -45,3 +45,8 @@ export async function action({request}: any) {
     }
 }
 
+export function headers({parentHeaders}: any) {
+    return {
+        'Cache-Control': parentHeaders.get('Cache-Control'),
+    }
+}

@@ -1,4 +1,4 @@
-import { FaTrophy, FaHandshake } from 'react-icons/fa';
+import {FaTrophy, FaHandshake} from 'react-icons/fa';
 
 import PricingPlan from '~/components/marketing/PricingPlan';
 
@@ -45,8 +45,8 @@ export function meta() {
     }
 }
 
-export function headers() {
+export function headers({parentHeaders}: any) {
     return {
-        'Cache-Control': 'max-age=3600',
+        'Cache-Control': parentHeaders.get('Cache-Control'),
     }
 }

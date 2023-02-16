@@ -43,6 +43,11 @@ export default function Index() {
   );
 }
 
+export function headers({parentHeaders}: any) {
+  return {
+    'Cache-Control': parentHeaders.get('Cache-Control'),
+  }
+}
 
 
 
